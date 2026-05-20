@@ -1,0 +1,20 @@
+# Dependencies
+lib/
+node_modules/
+
+# Compiler files
+cache/
+out/
+
+# Broadcast deployments
+broadcast/
+
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
