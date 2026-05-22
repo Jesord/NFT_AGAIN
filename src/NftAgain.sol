@@ -75,7 +75,7 @@ contract NftAgain is ERC721, ERC721URIStorage, Ownable, ReentrancyGuard, ERC2981
         returns (uint256 tokenId)
     {
         require(saleState == SaleState.Public, "Public sale is not activated");
-        require(_nextTokenId + amount < MAX_SUPPLY, "Max supply reached");
+        require(_nextTokenId + amount <= MAX_SUPPLY, "Max supply reached");
         require(msg.value >= _mintPrice * amount, "NOT ENOUGH ETH ");
         require(mintedPerWallet[msg.sender] + amount <= maxPerWallet, "Exceeds wallet limit");
 
