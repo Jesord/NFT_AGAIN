@@ -31,9 +31,7 @@ contract NFTAgainTest is Test {
     function test_RevertIf_MaxSupplyReached() public {
         uint256 maxSupply = nft.MAX_SUPPLY();
         for (uint256 i = 0; i < maxSupply; i++) {
-            address minter = address(
-                uint160(uint256(keccak256(abi.encodePacked("minter", i))))
-            );
+            address minter = address(uint160(uint256(keccak256(abi.encodePacked("minter", i)))));
             vm.deal(minter, _mintPrice);
             vm.prank(minter);
             nft.mintNft{value: _mintPrice}(minter, 1, Token_URI);
@@ -64,21 +62,13 @@ contract NFTAgainTest is Test {
 
     function test_TokenIdIncrementsOnEachMint() public {
         vm.prank(otherUser);
-        uint256 firstTokenId = nft.mintNft{value: _mintPrice}(
-            otherUser,
-            1,
-            Token_URI
-        );
+        uint256 firstTokenId = nft.mintNft{value: _mintPrice}(otherUser, 1, Token_URI);
 
         address anotherUser = makeAddr("anotherUser");
         vm.deal(anotherUser, _mintPrice);
         vm.prank(anotherUser);
 
-        uint256 secondTokenId = nft.mintNft{value: _mintPrice}(
-            anotherUser,
-            1,
-            Token_URI
-        );
+        uint256 secondTokenId = nft.mintNft{value: _mintPrice}(anotherUser, 1, Token_URI);
         assertEq(firstTokenId, 1);
         assertEq(secondTokenId, 2);
     }
@@ -86,22 +76,13 @@ contract NFTAgainTest is Test {
     function test_RevertIf_NonOwnerSetsTokenURI() public {
         // Mint a token first
         vm.prank(otherUser);
-        uint256 tokenId = nft.mintNft{value: _mintPrice}(
-            otherUser,
-            1,
-            Token_URI
-        );
+        uint256 tokenId = nft.mintNft{value: _mintPrice}(otherUser, 1, Token_URI);
 
         string memory newUri = "ipfs://QmNewHash/1.json";
 
         // otherUser tries to set the URI — should revert
         vm.prank(otherUser);
-        vm.expectRevert(
-            abi.encodeWithSignature(
-                "OwnableUnauthorizedAccount(address)",
-                otherUser
-            )
-        );
+        vm.expectRevert(abi.encodeWithSignature("OwnableUnauthorizedAccount(address)", otherUser));
         nft.setTokenURI(tokenId, newUri);
     }
 }
